@@ -2,8 +2,6 @@ const axios = require("axios");
 const path = require("path");
 const fs = require("fs");
 
-const issuesUrl = "https://api.github.com/repos/nmsn/blog/issues?per_page=100";
-
 const formatTitle = ({ title, level }) => {
   return `${"#".repeat(level)} ${title}`;
 };
@@ -43,33 +41,37 @@ const updateTime = () => {
 const script = ({ headline, repo, user }) => {
   const issuesUrl = `https://api.github.com/repos/${user}/${repo}/issues?per_page=100`;
 
-  axios(issuesUrl).then((res) => {
-    const { data = [] } = res || {};
+  console.log(issuesUrl);
 
-    const origin = data.map((item) => {
-      const { title, html_url, labels, updated_at, comments } = item;
-      const tags = labels?.map((item) => item.name);
-      return { title, url: html_url, tags, updated_at, comments };
-    });
+  axios(issuesUrl)
+    .then((res) => {
+      const { data = [] } = res || {};
+      console.log(data);
 
-    const content = getTableContent(origin);
+      const origin = data.map((item) => {
+        const { title, html_url, labels, updated_at, comments } = item;
+        const tags = labels?.map((item) => item.name);
+        return { title, url: html_url, tags, updated_at, comments };
+      });
 
-    const md = `${formatTitle({
-      title: headline,
-      level: 1,
-    })}\n\n> 更新时间：${updateTime()}\n\n${content}
+      const content = getTableContent(origin);
+
+      const md = `${formatTitle({
+        title: headline,
+        level: 1,
+      })}\n\n> 更新时间：${updateTime()}\n\n${content}
   `;
 
-    fs.writeFile("./README.md", md, (err) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      //文件写入成功。
-    });
-  });
-
-  console.log(path.join(__dirname, "README.md"));
+      fs.writeFile("./README.md", md, (err) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        //文件写入成功。
+        console.log(path.join(__dirname, "README.md"));
+      });
+    })
+    .catch((e) => console.log(e));
 };
 
-export default script;
+module.exports = script;

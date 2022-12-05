@@ -1,3 +1,3 @@
-import script from "./main.js";
+const script = require("./main.js");
 
-export default script;
+module.exports = script;
