@@ -1,2 +1,3 @@
 # issue-collection-md
-Collect repo issues to list.
+
+A script to collect repo issues list in a markdown file.
