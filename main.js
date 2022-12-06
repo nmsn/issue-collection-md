@@ -38,10 +38,13 @@ const updateTime = () => {
   return `${new Date().toLocaleDateString()}`;
 };
 
-const script = ({ headline, repo, user }) => {
+const script = ({
+  repo,
+  user,
+  title: curTitle = "Collection",
+  fileName = "README",
+}) => {
   const issuesUrl = `https://api.github.com/repos/${user}/${repo}/issues?per_page=100`;
-
-  console.log(issuesUrl);
 
   axios(issuesUrl)
     .then((res) => {
@@ -57,18 +60,18 @@ const script = ({ headline, repo, user }) => {
       const content = getTableContent(origin);
 
       const md = `${formatTitle({
-        title: headline,
+        title: curTitle,
         level: 1,
       })}\n\n> 更新时间：${updateTime()}\n\n${content}
   `;
 
-      fs.writeFile("./README.md", md, (err) => {
+      fs.writeFile(`./${fileName}.md`, md, (err) => {
         if (err) {
           console.error(err);
           return;
         }
         //文件写入成功。
-        console.log(path.join(__dirname, "README.md"));
+        console.log(path.join(__dirname, `${fileName}.md`));
       });
     })
     .catch((e) => console.log(e));
