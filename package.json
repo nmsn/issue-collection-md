@@ -2,9 +2,20 @@
   "name": "issue-collection-md",
   "version": "0.0.1",
   "description": "Collect repo issues to list.",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "module": "esm/index.js",
+  "sideEffects": false,
+  "files": [
+    "lib/",
+    "esm/"
+  ],
+  "types": "lib/index.d.ts",
+  "typings": "lib/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build:clean": "tsc --build --clean",
+    "build:cjs": "tsc",
+    "build:es": "tsc -m esNext --outDir esm",
+    "build": "yarn build:cjs && yarn build:es"
   },
   "repository": {
     "type": "git",
@@ -12,12 +23,16 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/nmsn/issue-collection-md/issues"
   },
   "homepage": "https://github.com/nmsn/issue-collection-md#readme",
   "dependencies": {
+    "@types/node": "^18.11.13",
     "axios": "0.x"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.4"
   }
 }
