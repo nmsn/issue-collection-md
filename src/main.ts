@@ -22,6 +22,8 @@ type IssueType = Omit<IssueOriginType, "html_url" | "labels"> & {
   tags: TagType[];
 };
 
+const LF = "\n";
+
 const title = ({
   title,
   level,
@@ -98,14 +100,14 @@ const getTable = <T>(
     )
   );
 
-  return [header, divider, ...renderData].join("\n");
+  return [header, divider, ...renderData].join(LF);
 };
 
 const script = ({
   repo,
   user,
-  title: curTitle = "Collection",
   fileName = "README",
+  title: inputTitle = "Collection",
 }: {
   repo: string;
   user: string;
@@ -128,7 +130,7 @@ const script = ({
       const content = getTable(origin, baseColumns);
 
       const md = `${title({
-        title: curTitle,
+        title: inputTitle,
         level: 1,
       })}\n\n> 更新时间：${now()}\n\n${content}
   `;
