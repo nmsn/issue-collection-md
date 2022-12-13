@@ -1,6 +1,6 @@
 {
   "name": "issue-collection-md",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Collect repo issues to list.",
   "main": "lib/index.js",
   "module": "esm/index.js",
