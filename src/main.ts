@@ -22,49 +22,83 @@ type IssueType = Omit<IssueOriginType, "html_url" | "labels"> & {
   tags: TagType[];
 };
 
-const formatTitle = ({
+const title = ({
   title,
   level,
 }: Pick<IssueType, "title"> & { level: number }) => {
   return `${"#".repeat(level)} ${title}`;
 };
 
-const formatLink = ({ url, title }: Pick<IssueType, "url" | "title">) => {
+const link = (title: IssueType["title"], url: IssueType["url"]) => {
   return `[${title}](${url})`;
 };
 
-const formatTag = (tag: TagType) => {
+const tag = (tag: TagType) => {
   return `\`${tag}\``;
 };
 
-const formatTags = (tags: TagType[]) => {
-  return `${tags.map((item) => formatTag(item))}`;
+const tagsSplit = (tags: TagType[]) => {
+  return `${tags?.map((item) => tag(item))}`;
 };
 
-const formatTime = (timeStr: string) => {
+const time = (timeStr: string) => {
   return new Date(timeStr).toLocaleDateString("zh-CN");
 };
 
-const getTableContentItem = ({
-  url,
-  title,
-  tags,
-  updated_at,
-  comments,
-}: IssueType) => {
-  return `|${formatLink({ url, title })}|${formatTags(tags)}|${formatTime(
-    updated_at
-  )}|${comments}|`;
-};
-
-const getTableContent = (origin: IssueType[]) => {
-  const content = origin?.map((item) => getTableContentItem(item)).join("\n");
-
-  return `|标题|类型|更新时间|评论数|\n|---|---|---|---|\n${content}`;
-};
-
-const updateTime = () => {
+const now = () => {
   return `${new Date().toLocaleDateString()}`;
+};
+
+const baseColumns = [
+  {
+    label: "标题",
+    dataIndex: "title",
+    render: (text: string, { url }: { url: string }) => link(text, url),
+  },
+  {
+    label: "类型",
+    dataIndex: "tags",
+    render: (tags: string[]) => tagsSplit(tags),
+  },
+  {
+    label: "更新时间",
+    dataIndex: "updated_at",
+    render: (updated_at: string) => time(updated_at),
+  },
+  {
+    label: "评论数",
+    dataIndex: "comments",
+  },
+];
+
+const arr2TableRow = (data: string[]) => {
+  return `|${data.join("|")}|`;
+};
+
+const getTable = <T>(
+  data: T[],
+  columns: {
+    label: string;
+    dataIndex: string;
+    render?: (text: any, data: T) => any;
+  }[]
+) => {
+  const header = arr2TableRow(columns?.map((item) => item.label));
+  const divider = arr2TableRow(Array(columns?.length).fill("---"));
+
+  const renderData = data?.map((item) =>
+    arr2TableRow(
+      columns?.map((column) => {
+        if (column.render) {
+          return column.render(item[column.dataIndex], item);
+        }
+
+        return item[column.dataIndex];
+      })
+    )
+  );
+
+  return [header, divider, ...renderData].join("\n");
 };
 
 const script = ({
@@ -75,8 +109,8 @@ const script = ({
 }: {
   repo: string;
   user: string;
-  title: string;
-  fileName: string;
+  title?: string;
+  fileName?: string;
 }) => {
   const issuesUrl = `https://api.github.com/repos/${user}/${repo}/issues?per_page=100`;
 
@@ -87,16 +121,16 @@ const script = ({
 
       const origin = (data as IssueOriginType[]).map((item) => {
         const { title, html_url, labels, updated_at, comments } = item;
-        const tags = labels?.map((item) => item.name);
+        const tags = labels?.map((item) => item.name) || [];
         return { title, url: html_url, tags, updated_at, comments };
       });
 
-      const content = getTableContent(origin);
+      const content = getTable(origin, baseColumns);
 
-      const md = `${formatTitle({
+      const md = `${title({
         title: curTitle,
         level: 1,
-      })}\n\n> 更新时间：${updateTime()}\n\n${content}
+      })}\n\n> 更新时间：${now()}\n\n${content}
   `;
 
       fs.writeFile(`./${fileName}.md`, md, (err) => {
