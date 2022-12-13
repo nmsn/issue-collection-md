@@ -16,7 +16,7 @@
     "build:cjs": "tsc",
     "build:es": "tsc -m esNext --outDir esm",
     "build": "npm run build:cjs && npm run build:es",
-    "release": "rltb && npm run build"
+    "release": "npm run build && rltb"
   },
   "repository": {
     "type": "git",
