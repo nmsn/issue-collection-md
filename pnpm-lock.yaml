@@ -7,10 +7,10 @@ specifiers:
   typescript: ^4.9.4
 
 dependencies:
-  '@types/node': 18.11.13
   axios: 0.27.2
 
 devDependencies:
+  '@types/node': 18.11.13
   release-toolbox: 0.0.3
   typescript: 4.9.4
 
@@ -18,7 +18,7 @@ packages:
 
   /@types/node/18.11.13:
     resolution: {integrity: sha512-IASpMGVcWpUsx5xBOrxMj7Bl8lqfuTY7FKAnPmu5cHkfQVWF8GulWS1jbRqA934qZL35xh5xN/+Xe/i26Bod4w==}
-    dev: false
+    dev: true
 
   /ansi-escapes/6.0.0:
     resolution: {integrity: sha512-IG23inYII3dWlU2EyiAiGj6Bwal5GzsgPMwjYGvc1HPE2dgbj4ZB5ToWBKSquKw74nB3TIuOwaI6/jSULzfgrw==}
