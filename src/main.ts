@@ -23,12 +23,21 @@ type IssueType = Omit<IssueOriginType, "html_url" | "labels"> & {
 };
 
 const LF = "\n";
+const ParagraphDividingLine = `${LF}${LF}`;
 
-const title = ({
+const paragraph = (content: string[]) => {
+  return content.join(ParagraphDividingLine);
+};
+
+const heading = ({
   title,
   level,
 }: Pick<IssueType, "title"> & { level: number }) => {
   return `${"#".repeat(level)} ${title}`;
+};
+
+const blockquote = (text: string) => {
+  return `> ${text}`;
 };
 
 const link = (title: IssueType["title"], url: IssueType["url"]) => {
@@ -129,13 +138,16 @@ const script = ({
 
       const content = getTable(origin, baseColumns);
 
-      const md = `${title({
-        title: inputTitle,
-        level: 1,
-      })}\n\n> 更新时间：${now()}\n\n${content}
-  `;
+      const md = paragraph([
+        heading({
+          title: inputTitle,
+          level: 1,
+        }),
+        blockquote(`更新时间：${now()}`),
+        content,
+      ]);
 
-      fs.writeFile(`./${fileName}.md`, md, (err) => {
+      fs.writeFile(`./${fileName}2.md`, md, (err) => {
         if (err) {
           //sd
           console.error(err);
