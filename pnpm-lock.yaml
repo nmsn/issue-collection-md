@@ -11,7 +11,7 @@ specifiers:
   husky: ^8.0.2
   lint-staged: ^13.1.0
   prettier: ^2.8.1
-  release-toolbox: 0.0.3
+  release-toolbox: 0.0.5
   tslib: ^2.4.1
   typescript: ^4.9.4
 
@@ -28,7 +28,7 @@ devDependencies:
   husky: 8.0.2
   lint-staged: 13.1.0
   prettier: 2.8.1
-  release-toolbox: 0.0.3
+  release-toolbox: 0.0.5
   tslib: 2.4.1
   typescript: 4.9.4
 
@@ -1381,8 +1381,9 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /release-toolbox/0.0.3:
-    resolution: {integrity: sha512-2/KDsKgCtsZMN+m14KBm4RReRAf8I0/nygKjaljaqHhqFtKziTvb42+baS8EovxcnZCdCwXNKjzfYjqhrPaV7A==}
+  /release-toolbox/0.0.5:
+    resolution: {integrity: sha512-1S5MyaGfjk2m/LLQ9o8Vlu5Vwo2aG591MHbmBAe2WhoI44uHFMfiA1Y4OwGi8CUyVQesPB8APfsp6ZAcJbb2pA==}
+    engines: {node: '>=16'}
     hasBin: true
     dependencies:
       chalk: 5.2.0
