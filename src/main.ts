@@ -2,11 +2,9 @@ import axios from 'axios';
 import path from 'path';
 import fs from 'fs';
 
-type TagType = string;
-
 type LabelType = {
   name: string;
-  color?: string;
+  color: string;
 };
 
 type IssueOriginType = {
@@ -19,7 +17,7 @@ type IssueOriginType = {
 
 type IssueType = Omit<IssueOriginType, 'html_url' | 'labels'> & {
   url: string;
-  tags: TagType[];
+  tags: LabelType[];
 };
 
 const LF = '\n';
@@ -41,12 +39,14 @@ const link = (title: IssueType['title'], url: IssueType['url']) => {
   return `[${title}](${url})`;
 };
 
-const tag = (tag: TagType) => {
-  return `\`${tag}\``;
+const getColorTag = (text: string, color: string) => {
+  const baseUrl = `https://img.shields.io/badge/-${text}-${color}`;
+
+  return `![${text}](${baseUrl})`;
 };
 
-const tagsSplit = (tags: TagType[]) => {
-  return `${tags?.map((item) => tag(item))}`;
+const tagsSplit = (tags: LabelType[]) => {
+  return tags?.map((item) => getColorTag(item.name, item.color)).join(' ');
 };
 
 const time = (timeStr: string) => {
@@ -66,7 +66,7 @@ const baseColumns = [
   {
     label: '类型',
     dataIndex: 'tags',
-    render: (tags: string[]) => tagsSplit(tags),
+    render: (tags: { name: string; color: string }[]) => tagsSplit(tags),
   },
   {
     label: '更新时间',
@@ -129,7 +129,8 @@ const script = ({
 
       const origin = (data as IssueOriginType[]).map((item) => {
         const { title, html_url, labels, updated_at, comments } = item;
-        const tags = labels?.map((item) => item.name) || [];
+
+        const tags = labels?.map((item) => ({ name: item.name, color: item.color })) || [];
         return { title, url: html_url, tags, updated_at, comments };
       });
 
@@ -144,7 +145,7 @@ const script = ({
         content,
       ]);
 
-      fs.writeFile(`./${fileName}2.md`, md, (err) => {
+      fs.writeFile(`./${fileName}.md`, md, (err) => {
         if (err) {
           //sd
           console.error(err);
