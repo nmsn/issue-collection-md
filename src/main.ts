@@ -40,6 +40,7 @@ const link = (title: IssueType['title'], url: IssueType['url']) => {
 };
 
 const getColorTag = (text: string, color: string) => {
+  // TODO add link to issue label page
   const baseUrl = `https://img.shields.io/badge/-${text}-${color}`;
 
   return `![${text}](${baseUrl})`;
