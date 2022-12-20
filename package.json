@@ -34,10 +34,10 @@
   },
   "homepage": "https://github.com/nmsn/issue-collection-md#readme",
   "dependencies": {
-    "axios": "0.x"
+    "axios": "~1.2.1"
   },
   "devDependencies": {
-    "@types/node": "^18.11.13",
+    "@types/node": "^18.11.17",
     "@typescript-eslint/eslint-plugin": "^5.47.0",
     "@typescript-eslint/parser": "^5.47.0",
     "eslint": "^8.30.0",
