@@ -1,3 +1,3 @@
-import script from "./main";
+import script from './main';
 
 export default script;

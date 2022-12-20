@@ -1,6 +1,6 @@
-import axios from "axios";
-import path from "path";
-import fs from "fs";
+import axios from 'axios';
+import path from 'path';
+import fs from 'fs';
 
 type TagType = string;
 
@@ -17,30 +17,27 @@ type IssueOriginType = {
   comments: string;
 };
 
-type IssueType = Omit<IssueOriginType, "html_url" | "labels"> & {
+type IssueType = Omit<IssueOriginType, 'html_url' | 'labels'> & {
   url: string;
   tags: TagType[];
 };
 
-const LF = "\n";
+const LF = '\n';
 const ParagraphDividingLine = `${LF}${LF}`;
 
 const paragraph = (content: string[]) => {
   return content.join(ParagraphDividingLine);
 };
 
-const heading = ({
-  title,
-  level,
-}: Pick<IssueType, "title"> & { level: number }) => {
-  return `${"#".repeat(level)} ${title}`;
+const heading = ({ title, level }: Pick<IssueType, 'title'> & { level: number }) => {
+  return `${'#'.repeat(level)} ${title}`;
 };
 
 const blockquote = (text: string) => {
   return `> ${text}`;
 };
 
-const link = (title: IssueType["title"], url: IssueType["url"]) => {
+const link = (title: IssueType['title'], url: IssueType['url']) => {
   return `[${title}](${url})`;
 };
 
@@ -53,7 +50,7 @@ const tagsSplit = (tags: TagType[]) => {
 };
 
 const time = (timeStr: string) => {
-  return new Date(timeStr).toLocaleDateString("zh-CN");
+  return new Date(timeStr).toLocaleDateString('zh-CN');
 };
 
 const now = () => {
@@ -62,28 +59,28 @@ const now = () => {
 
 const baseColumns = [
   {
-    label: "标题",
-    dataIndex: "title",
+    label: '标题',
+    dataIndex: 'title',
     render: (text: string, { url }: { url: string }) => link(text, url),
   },
   {
-    label: "类型",
-    dataIndex: "tags",
+    label: '类型',
+    dataIndex: 'tags',
     render: (tags: string[]) => tagsSplit(tags),
   },
   {
-    label: "更新时间",
-    dataIndex: "updated_at",
+    label: '更新时间',
+    dataIndex: 'updated_at',
     render: (updated_at: string) => time(updated_at),
   },
   {
-    label: "评论数",
-    dataIndex: "comments",
+    label: '评论数',
+    dataIndex: 'comments',
   },
 ];
 
 const arr2TableRow = (data: string[]) => {
-  return `|${data.join("|")}|`;
+  return `|${data.join('|')}|`;
 };
 
 const getTable = <T>(
@@ -95,7 +92,7 @@ const getTable = <T>(
   }[]
 ) => {
   const header = arr2TableRow(columns?.map((item) => item.label));
-  const divider = arr2TableRow(Array(columns?.length).fill("---"));
+  const divider = arr2TableRow(Array(columns?.length).fill('---'));
 
   const renderData = data?.map((item) =>
     arr2TableRow(
@@ -115,8 +112,8 @@ const getTable = <T>(
 const script = ({
   repo,
   user,
-  fileName = "README",
-  title: inputTitle = "Collection",
+  fileName = 'README',
+  title: inputTitle = 'Collection',
 }: {
   repo: string;
   user: string;
