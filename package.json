@@ -22,8 +22,12 @@
     "type": "git",
     "url": "git+https://github.com/nmsn/issue-collection-md.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "markdown",
+    "github",
+    "issue"
+  ],
+  "author": "nmsn <1336696700@qq.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/nmsn/issue-collection-md/issues"
