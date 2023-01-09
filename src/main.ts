@@ -1,10 +1,5 @@
-import axios from 'axios';
-import path from 'path';
+import { request } from '@octokit/request';
 import fs from 'fs';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 type LabelType = {
   name: string;
@@ -114,7 +109,29 @@ const getTable = <T>(
   return [header, divider, ...renderData].join(LF);
 };
 
-const script = ({
+const dealResult = (data = [], inputTitle: string) => {
+  const origin = (data as IssueOriginType[]).map((item) => {
+    const { title, html_url, labels, updated_at, comments } = item;
+
+    const tags = labels?.map((item) => ({ name: item.name, color: item.color })) || [];
+    return { title, url: html_url, tags, updated_at, comments };
+  });
+
+  const content = getTable(origin, baseColumns);
+
+  const md = paragraph([
+    heading({
+      title: inputTitle,
+      level: 1,
+    }),
+    blockquote(`更新时间：${now()}`),
+    content,
+  ]);
+
+  return md;
+};
+
+const script = async ({
   repo,
   user,
   fileName = 'README',
@@ -125,42 +142,15 @@ const script = ({
   title?: string;
   fileName?: string;
 }) => {
-  const issuesUrl = `https://api.github.com/repos/${user}/${repo}/issues?per_page=100`;
+  const result = await request('GET /repos/{owner}/{repo}/issues?per_page=1', {
+    owner: user,
+    repo,
+  });
 
-  axios(issuesUrl)
-    .then((res) => {
-      const { data = [] } = res || {};
-      console.log(data);
+  const { data = [] } = result || {};
+  const md = dealResult(data, inputTitle);
 
-      const origin = (data as IssueOriginType[]).map((item) => {
-        const { title, html_url, labels, updated_at, comments } = item;
-
-        const tags = labels?.map((item) => ({ name: item.name, color: item.color })) || [];
-        return { title, url: html_url, tags, updated_at, comments };
-      });
-
-      const content = getTable(origin, baseColumns);
-
-      const md = paragraph([
-        heading({
-          title: inputTitle,
-          level: 1,
-        }),
-        blockquote(`更新时间：${now()}`),
-        content,
-      ]);
-
-      fs.writeFile(`./${fileName}.md`, md, (err) => {
-        if (err) {
-          //sd
-          console.error(err);
-          return;
-        }
-        //文件写入成功。
-        console.log(path.join(__dirname, `${fileName}.md`));
-      });
-    })
-    .catch((e) => console.log(e));
+  fs.writeFileSync(`./${fileName}.md`, md);
 };
 
 export default script;
