@@ -34,7 +34,7 @@
   },
   "homepage": "https://github.com/nmsn/issue-collection-md#readme",
   "dependencies": {
-    "@octokit/request": "^6.2.2"
+    "@octokit/request": "^7.0.1"
   },
   "devDependencies": {
     "@types/node": "^20.1.1",
