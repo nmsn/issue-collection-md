@@ -12,7 +12,7 @@ dependencies:
 devDependencies:
   '@types/node':
     specifier: ^20.1.1
-    version: 20.3.1
+    version: 20.3.3
   '@typescript-eslint/eslint-plugin':
     specifier: ^5.47.0
     version: 5.61.0(@typescript-eslint/parser@5.60.1)(eslint@8.44.0)(typescript@5.1.6)
@@ -253,8 +253,8 @@ packages:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
     dev: true
 
-  /@types/node@20.3.1:
-    resolution: {integrity: sha512-EhcH/wvidPy1WeML3TtYFGR83UzjxeWRen9V402T8aUGYsCHOmfoisV3ZSg03gAFIbLq8TnWOJ0f4cALtnSEUg==}
+  /@types/node@20.3.3:
+    resolution: {integrity: sha512-wheIYdr4NYML61AjC8MKj/2jrR/kDQri/CIpVoZwldwhnIrD/j9jIU5bJ8yBKuB2VhpFV7Ab6G2XkBjv9r9Zzw==}
     dev: true
 
   /@types/semver@7.3.13:
