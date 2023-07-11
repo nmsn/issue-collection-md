@@ -41,7 +41,7 @@
   },
   "homepage": "https://github.com/nmsn/issue-collection-md#readme",
   "dependencies": {
-    "@octokit/request": "^6.2.8"
+    "@octokit/request": "^7.0.1"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.2",
