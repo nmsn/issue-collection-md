@@ -67,20 +67,15 @@ const requestGithubIssues = async ({
 };
 
 const script = async ({
-  repo,
-  user,
   fileName = 'README',
   title = 'Collection',
+  repoOptions,
 }: {
-  repo: string;
-  user: string;
   title?: string;
   fileName?: string;
+  repoOptions: RequestParamsType;
 }) => {
-  const data = await requestGithubIssues({
-    owner: user,
-    repo,
-  });
+  const data = await requestGithubIssues(repoOptions);
 
   createMd(`./${fileName}.md`, formatMd(data, title));
 };
