@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@nmsn/md-maker':
+    specifier: ^0.4.0
+    version: 0.4.0
   '@octokit/request':
     specifier: ^7.0.1
     version: 7.0.1
@@ -132,6 +135,11 @@ packages:
   /@jridgewell/sourcemap-codec@1.4.15:
     resolution: {integrity: sha512-eF2rxCRulEKXHTRiDrDy6erMYWqNw4LPdQ8UQA4huuxaQsVeRPFl2oM8oDGxMFhJUWZf9McpLtJasDDZb/Bpeg==}
     dev: true
+
+  /@nmsn/md-maker@0.4.0:
+    resolution: {integrity: sha512-d+s6n0YvR7NDrAxo8lRQh6b+U8b/JLn8Kv8C5Ag0ckLLm1PqQ0rTJyQ+1pT7lTwtXr40bqDMLiP8pl8TQpQj0w==}
+    engines: {node: '>=16'}
+    dev: false
 
   /@nodelib/fs.scandir@2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
