@@ -2,20 +2,27 @@
   "name": "issue-collection-md",
   "version": "0.0.5",
   "description": "Collect repo issues to list.",
-  "main": "lib/index.js",
+  "main": "./lib/index.js",
+  "module": "./es/index.js",
+  "types": "./es/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./lib/index.js",
+      "import": "./es/index.js",
+      "types": "./es/index.d.ts"
+    }
+  },
   "sideEffects": false,
   "type": "module",
   "files": [
-    "lib/"
+    "lib",
+    "es",
+    "package.json",
+    "README.md"
   ],
-  "types": "lib/index.d.ts",
-  "typings": "lib/index.d.ts",
   "scripts": {
     "prepare": "husky install",
-    "build:clean": "tsc --build --clean",
-    "build:es": "tsc",
-    "build:watch": "tsc --watch",
-    "build": "npm run build:clean && npm run build:es",
+    "build": "rollup -c",
     "release": "npm run build && rltb"
   },
   "repository": {
@@ -34,21 +41,27 @@
   },
   "homepage": "https://github.com/nmsn/issue-collection-md#readme",
   "dependencies": {
-    "@octokit/request": "^6.2.2"
+    "@octokit/request": "^6.2.8"
   },
   "devDependencies": {
-    "@types/node": "^20.1.1",
-    "@typescript-eslint/eslint-plugin": "^5.47.0",
-    "@typescript-eslint/parser": "^5.47.0",
-    "eslint": "^8.30.0",
-    "eslint-config-prettier": "^8.5.0",
+    "@rollup/plugin-commonjs": "^25.0.2",
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^15.1.0",
+    "@types/node": "^20.4.1",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
+    "eslint": "^8.44.0",
+    "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "husky": "^8.0.2",
-    "lint-staged": "^13.1.0",
-    "prettier": "^2.8.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3",
+    "prettier": "^2.8.8",
     "release-toolbox": "0.2.0",
-    "tslib": "^2.4.1",
-    "typescript": "^5.0.3"
+    "rollup": "^3.26.2",
+    "rollup-plugin-clear": "^2.0.7",
+    "rollup-plugin-typescript2": "^0.35.0",
+    "tslib": "^2.6.0",
+    "typescript": "^5.1.6"
   },
   "engines": {
     "node": ">=16"

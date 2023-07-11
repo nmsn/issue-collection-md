@@ -1,3 +1,3 @@
-import script from './main.js';
+import script from './main';
 
 export default script;
