@@ -42,7 +42,7 @@
   "homepage": "https://github.com/nmsn/issue-collection-md#readme",
   "dependencies": {
     "@nmsn/md-maker": "^0.4.0",
-    "@octokit/request": "^7.0.1"
+    "@octokit/request": "^8.0.4"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.2",
