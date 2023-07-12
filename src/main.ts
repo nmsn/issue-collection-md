@@ -6,8 +6,19 @@ type AsyncReturnType<T extends (...args: any) => any> = T extends (...args: any)
   ? R
   : any;
 
-const formatMd = (data: AsyncReturnType<typeof requestGithubIssues>, title: string) =>
-  md([
+const getRepoUrl = ({ owner, repo }: { owner: string; repo: string }) =>
+  `https://github.com/${owner}/${repo}/issues`;
+
+const formatMd = ({
+  data,
+  title,
+  hasMoreInfo,
+}: {
+  data: AsyncReturnType<typeof requestGithubIssues>['data'];
+  title: string;
+  hasMoreInfo?: { owner: string; repo: string };
+}) => {
+  const content: Parameters<typeof md>[0] = [
     {
       type: 'h1',
       params: title,
@@ -31,7 +42,19 @@ const formatMd = (data: AsyncReturnType<typeof requestGithubIssues>, title: stri
         }),
       },
     },
-  ]);
+  ];
+
+  hasMoreInfo &&
+    content.push({
+      type: 'link',
+      params: {
+        title: '查看更多...',
+        url: getRepoUrl({ owner: hasMoreInfo?.owner, repo: hasMoreInfo.repo }),
+      },
+    });
+
+  return md(content);
+};
 
 // https://docs.github.com/zh/rest/issues/issues
 type RequestParamsType = {
@@ -63,7 +86,11 @@ const requestGithubIssues = async ({
     page,
   });
 
-  return data;
+  if (data?.length >= per_page) {
+    return { data, hasMoreInfo: { owner, repo } };
+  }
+
+  return { data };
 };
 
 const script = async ({
@@ -75,9 +102,9 @@ const script = async ({
   fileName?: string;
   repoOptions: RequestParamsType;
 }) => {
-  const data = await requestGithubIssues(repoOptions);
+  const { data, hasMoreInfo } = await requestGithubIssues(repoOptions);
 
-  createMd(`./${fileName}.md`, formatMd(data, title));
+  createMd(`./${fileName}.md`, formatMd({ data, title, hasMoreInfo }));
 };
 
 export default script;
